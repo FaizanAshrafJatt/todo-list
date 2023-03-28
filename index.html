@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+<style>  
+body {
+  margin: 0;
+  min-width: 250px;
+}
+
+/* Include the padding and border in an element's total width and height */
+* {
+  box-sizing: border-box;
+}
+
+/* Remove margins and padding from the list */
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the list items */
+ul li {
+  cursor: pointer;
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  list-style-type: none;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+  
+}
+
+/* Set all odd list items to a different color (zebra-stripes) */
+ul li:nth-child(odd) {
+  background: #928b8b;
+}ul li:nth-child(even) {
+  background: #f0ddec;
+}
+
+/* Darker background-color on hover */
+ul li:hover {
+  background: #ddd;
+}
+
+/* When clicked on, add a background color and strike out text */
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+
+/* Style the close button */
+/* .close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+
+.close:hover {
+  background-color: #5ae24e;
+  color: white;
+} */
+
+/* Style the header */
+.header {
+  background-color: #68e05d;
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+/* Clear floats after the header */
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+body{
+  overflow: hidden;
+}
+
+/* Style the input */
+input {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+  outline: none;
+}
+
+/* Style the "Add" button */
+.addBtn {
+  padding: 10px;
+  width: 25%;
+  background: #a31ae2;
+  color: #fdfdfd;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.addBtn:hover {
+  background-color: #0cf3e0;
+  color: honeydew;
+}
+.close{
+  position: relative;
+margin: 10px;
+background-color: #a31ae2;
+color: white;
+padding: 17px 25px;
+left: 42%;
+font-size: 20px;
+}
+li
+{
+  position: relative;
+}
+.closee{
+  position: absolute;
+Top: 14px;
+right: 19px;
+padding:2px 7px;
+background-color: rgb(88, 22, 241);
+border:none;
+color: #fff;
+}
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<div id="myDIV" class="header">
+  <h2 style="margin:5px">My To Do List</h2>
+  <input type="text" id="input1" placeholder="Title...">
+  <button onclick="addanother() , show() " class="addBtn"> Add</button>
+ 
+</div>
+<ul id="local-storage">
+ 
+</ul>
+<div  id="close">
+  <button onclick="removeall()" class="close">Clear All </button>
+</div>
+
+<script>
+  let todos = [];
+  
+
+  function addanother() {
+    let input = document.getElementById("input1").value;
+    todos.push(input);
+    let arrytostring = JSON.stringify(todos);
+    localStorage.setItem('todo', arrytostring);
+  }
+
+  function show() {
+    let show = JSON.parse(localStorage.getItem('todo'))  ;
+    let result = "";
+    for (let i = 0; i < show.length; i++) {
+      result += "<li>" + show[i] + "<button onclick='removee(" + i + ")' class='closee'><i class='fa-solid fa-xmark'></i></button></li>";
+    }
+    document.getElementById("local-storage").innerHTML = result;
+  }
+ window.onload = show;
+  function removee(index) {
+   
+      
+  
+      todos.splice(index, 1);
+      let arrytostring = JSON.stringify(todos);
+       localStorage.setItem('todo', arrytostring);
+     show();
+      
+    }
+    function removeall(){
+      localStorage.removeItem("todo");
+     todos = [] ; 
+     
+      console.log("k");
+      document.getElementById("local-storage").innerHTML = " ";
+
+    }
+  
+</script>
+</body>
+
+<!-- <ul id="local-storage">
+  <li> Sehri  </li>
+  <li >Offer namaz</li>
+  <li>go to uni </li>
+  <li>Go to software house </li>
+  <li>Iftar </li>
+  <li>Traveeh</li>
+</ul>
+<div class="close" id="close">
+  <button onclick="removee()" id="clos">
+    <i class="fa-solid fa-xmark"> </i>
+  </button>
+</div>
+  <script>
+    let close = document.getElementById("close").innerHTML;
+    let todos = [];
+function addanother(){
+let input = document.getElementById("input1").value;
+todos.push(input);
+let arrytostring = JSON.stringify(todos);
+localStorage.setItem( 'todo' , arrytostring);
+}
+function show(){
+ let show = JSON.parse(localStorage.getItem('todo'));
+ let result= " ";
+ for(let i= 0 ; i<show.length ; i++){
+  result = "<li>" + show[i] + close +"</li>" ;
+
+ }   
+ document.getElementById("local-storage").insertAdjacentHTML("beforeend", result);
+}
+window.onload = show;
+
+function removee(){
+  localStorage.removeItem('todo');
+  // document.getElementById("local-storage").parentElement.innerHTML; 
+  document.getElementById("clos").parentElement.outerHTML = " ";
+
+}
+
+</script>
+
+</body>
+</html> -->
